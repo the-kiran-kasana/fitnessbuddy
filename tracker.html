@@ -284,6 +284,28 @@ input:checked + .slider:before {
 }
 
 
+   .share-btn {
+  background: #10b981; /* Emerald green */
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.button-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.share-btn:hover {
+  background: #059669;
+}
+
   </style>
 </head>
 <body>
@@ -410,8 +432,13 @@ input:checked + .slider:before {
       <div class="progress-fill" id="goal-calories-bar" style="background-color: #f43f5e;"></div>
     </div>
   </div>
-</div>
 
+
+  <div class="button-wrapper">
+    <button id="shareWorkoutBtn" class="share-btn">Copy Progress</button>
+  </div>
+
+</div>
 
 <!-- Firebase Scripts -->
 <script type="module">
@@ -610,6 +637,46 @@ window.addEventListener("DOMContentLoaded", () => {
     body.classList.add("dark");
     toggle.checked = true;
   }
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+document.getElementById("shareWorkoutBtn").addEventListener("click", () => {
+  onAuthStateChanged(auth, async (user) => {
+    if (user) {
+      const link = window.location.href;
+
+      try {
+        if (navigator.share) {
+          await navigator.share({ title: "My Workout", url: link });
+        } else {
+          await navigator.clipboard.writeText(link);
+          alert("Link copied!");
+        }
+      } catch (err) {
+        alert("Sharing failed.");
+      }
+
+    } else {
+      alert("Login first");
+      window.location.href = "login.html";
+    }
+  });
 });
 
 </script>

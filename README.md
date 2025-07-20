@@ -1,8 +1,8 @@
 #  FitnessBuddy_App
+    **FitnessBuddy** is a web app that helps you connect with fitness buddies who share similar goals, 
+     track your workouts, and stay motivated together!
 
-**FitnessBuddy** is a web app that helps you connect with fitness buddies who share similar goals, track your workouts, and stay motivated together!
-
-
+*********************************************************************************************************************
 
 ##  What’s the Goal?
     
@@ -11,28 +11,43 @@
        - Set personal fitness goals
        - Track your progress over time
 
+*********************************************************************************************************************
 
-# Project 
-Frontend + Backend = Fullstack
+# Project  type 
+     Frontend + Backend = Fullstack
+*********************************************************************************************************************
 
 
 ## Directory Structure
-FitnessBuddy_App/
-├── index.html          
-├── BMI.html
-├── login.html
-├── location.html
-├── fitnessBuddy.html
-├── registration.html
-├── tracker.html
-├── ProfileCreation.html
-├── message.html
-├── css/
-│   └── styles.css
-├── javascript/
-│   └── script.js
+        FitnessBuddy_App/
+        ├── index.html          
+        ├── BMI.html
+        ├── login.html
+        ├── location.html
+        ├── fitnessBuddy.html
+        ├── registration.html
+        ├── tracker.html
+        ├── ProfileCreation.html
+        ├── message.html
+        ├── css/
+        │   └── styles.css
+        ├── javascript/
+        │   └── script.js
+
+*********************************************************************************************************************
+
+## Video Walkthrough of the project
+all about the  project step by step.
+link : https://youtu.be/QW1QPp6iCxw
+
+*********************************************************************************************************************
+## Video Walkthrough of the codebase
+all about the code of project step by step.
+link : https://youtu.be/-j2pJjt44A0
 
 
+
+*********************************************************************************************************************
 
 ## Features
 List out the key features of my application.
@@ -62,8 +77,6 @@ List out the key features of my application.
       - See how many calories you’ve burned and how close you are to your fitness goals.
       - The app also estimates how many days you might need to reach your target BMI!
 
-
-
 ##  Goal-Based Challenges
     - Join or create challenges like **"Run 10 miles this week!"**
     - See visual progress bars to stay motivated.
@@ -79,32 +92,23 @@ List out the key features of my application.
 ## Nearby Gym Finder
     - Find nearby gyms using city or pin code (based on static data or an API).
 
+*********************************************************************************************************************
 
 
 
 ## Technology Stack
-    the technologies used in the project.
-      - HTML, CSS, JavaScript
-      - Firebase for backend (Auth, DB, etc.)
-      - Chart.js for visual dashboards
-      - Modern UI (No Tailwind/CSS Framework used for now)
-      - libraries/modules
+ the technologies used in the project.
+
+          - HTML, CSS, JavaScript
+          - Firebase for backend (Auth, DB, etc.)
+          - Modern UI (No Tailwind/CSS Framework used for now)
+           - libraries/modules
+
+*********************************************************************************************************************
 
 
-
-
-
-
-
-
-
-
-
-
-## 📖 Usage
+##  Usage
 Here’s how you can start using FitnessBuddy_App:
-
-
 
 
 ### 1. Sign Up or Log In
@@ -139,38 +143,29 @@ Here’s how you can start using FitnessBuddy_App:
             - Calories burned → estimated weight loss
             - Estimated days to reach your goal
 
+
 ### 7. Join Challenges
        - Navigate to **Challenges**
        - Join or create a goal like: “Run 10 miles this week”
        - Watch your progress visually!
 
-### 8. Use Group Logging (Optional)
-       - Create a small group with your friends
-       - Log group workouts together
-       - See team progress using simple charts
 
 ### 9. Find Nearby Gyms
       - Use the **Nearby Gyms** feature to search based on your city or pin code
 
-
-
-
+*********************************************************************************************************************
 
 
 
 ##  Credentials
+ Email:** testuser@fitnessbuddy.com
+ Password:** Test@1234
 
-Use the following demo credentials to explore authenticated pages:
+*********************************************************************************************************************
 
-###  Test User
-- **Email:** testuser@fitnessbuddy.com
-- **Password:** Test@1234
-
-
-
-
-
-## API Endpoints
-
-A list of my API endpoints and methods, brief descriptions, and examples of request/response
-
+## APIs Used
+ Application relies on external APIs, list here 
+      
+     -Firebase Authentication – For user sign-up/login.
+     -Firebase Realtime Database – For storing user workouts and messages and user details.
+     -Navigator Web Share API – To share workout progress via supported social media apps or clipboard.
