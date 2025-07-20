@@ -132,7 +132,7 @@
     </div>
   </div>
 
-  <button class="btn" onclick="calculateBMI()">Calculate</button>
+  <button class="btn" onclick="calculateBMI(event)">Calculate</button>
 
   <div id="bmi-result"></div>
 </div>
@@ -166,14 +166,16 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/fireba
 
   onAuthStateChanged(auth, (user) => {
     if (!user) {
-      window.location.href = "login.html"; // Redirect to login page
+      window.location.href = "login.html";
     } else {
       // ✅ User is logged in — you can show progress or fetch user data here
       console.log("User is logged in:", user.email);
     }
   });
 
-    function calculateBMI() {
+
+window.calculateBMI =   function (event) {
+
       const height = parseFloat(document.getElementById('height').value) / 100;
       const weight = parseFloat(document.getElementById('weight').value);
       const targetBmi = parseFloat(document.getElementById('targetBmi').value);

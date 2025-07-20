@@ -382,6 +382,39 @@ header {
   }
 }
 
+
+
+
+
+.image-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  padding: 10px;
+}
+
+.image-container img {
+  max-width: 100%;
+  height: auto;
+  width: 100%;
+  max-width: 400px; /* adjust max size */
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.image-container img:hover {
+  transform: scale(1.05);
+}
+
+.image-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
   </style>
 </head>
 <body>
@@ -425,9 +458,9 @@ header {
     </p>
 </section>
 
-
-        <img  style="margin-left:200px;"src="https://i.pinimg.com/1200x/70/13/23/7013233f0e34b44a006bafb52315cc9e.jpg" alt="Slide 3" />
-
+<div class="image-wrapper">
+        <img  class="image-container" src="https://i.pinimg.com/1200x/70/13/23/7013233f0e34b44a006bafb52315cc9e.jpg" alt="Slide 3" />
+</div>
 
 
 
@@ -471,9 +504,9 @@ header {
 </section>
 
 
-
-<img  style="margin-left:200px;"src="https://i.pinimg.com/1200x/d9/ab/33/d9ab333a73701b7b0f0827d900c93c9b.jpg" alt="Slide 3" />
-
+<div class="image-wrapper">
+<img  class="image-container" src="https://i.pinimg.com/1200x/d9/ab/33/d9ab333a73701b7b0f0827d900c93c9b.jpg" alt="Slide 3" />
+</div>
 
 
 

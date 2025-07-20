@@ -91,16 +91,16 @@ body {
   color:black;
 }
 
-.action-btn {
-  margin-top: 1rem;
-  background: linear-gradient(135deg,  #e8e7eb,  #9c9c9e );
-  color: #111;
-  padding: 0.5rem 1.5rem;
-  border: none;
-  border-radius: 20px;
-  cursor: pointer;
-  font-weight: bold;
-}
+<!--.action-btn {-->
+<!--  margin-top: 1rem;-->
+<!--  background: linear-gradient(135deg,  #e8e7eb,  #9c9c9e );-->
+<!--  color: #fff;-->
+<!--  padding: 0.5rem 1.5rem;-->
+<!--  border: none;-->
+<!--  border-radius: 20px;-->
+<!--  cursor: pointer;-->
+<!--  font-weight: bold;-->
+<!--}-->
 .buddies-section {
   padding: 2rem;
   max-width: 1200px;
@@ -301,6 +301,29 @@ body {
 }
 
 
+.action-btn {
+  background: linear-gradient(135deg,   #608bd8 ,  #a88cde );
+  border: none;
+  padding: 5px 20px;
+  border-radius: 50px;
+  transition: background-color 0.3s ease;
+  cursor: pointer;
+  margin-top: 1rem;
+}
+
+.action-btn a {
+  color: white;
+  text-decoration: none; /* Removes underline */
+  font-size: 16px;
+  font-weight: bold;
+  display: inline-block;
+}
+
+.action-btn:hover {
+  background-color: #4338ca; /* Darker indigo */
+}
+
+
 
 
   </style>
@@ -380,79 +403,91 @@ body {
 
 </body>
 <script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+import {
+  getAuth,
+  onAuthStateChanged,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword
+} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
 
+import {
+  getDatabase,
+  onValue,
+  ref,
+  set,
+  get
+} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js";
 
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
-  import { getAuth, onAuthStateChanged,createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
-  import { getDatabase, onValue,ref, set, get } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js";
+// 🔐 Firebase config
+const firebaseConfig = {
+  apiKey: "AIzaSyDvJ5icMfg6QOSq1_RrdsY2qMnCNkdRyzs",
+  authDomain: "fitnessbuddyapp-f08eb.firebaseapp.com",
+  databaseURL: "https://fitnessbuddyapp-f08eb-default-rtdb.firebaseio.com",
+  projectId: "fitnessbuddyapp-f08eb",
+  storageBucket: "fitnessbuddyapp-f08eb.appspot.com",
+  messagingSenderId: "709503176678",
+  appId: "1:709503176678:web:8fa732501ec7ca3a67d027",
+  measurementId: "G-JF32SWZCRM"
+};
 
-   const firebaseConfig = {
-      apiKey: "AIzaSyDvJ5icMfg6QOSq1_RrdsY2qMnCNkdRyzs",
-      authDomain: "fitnessbuddyapp-f08eb.firebaseapp.com",
-      databaseURL: "https://fitnessbuddyapp-f08eb-default-rtdb.firebaseio.com",
-      projectId: "fitnessbuddyapp-f08eb",
-      storageBucket: "fitnessbuddyapp-f08eb.firebasestorage.app",
-      messagingSenderId: "709503176678",
-      appId: "1:709503176678:web:8fa732501ec7ca3a67d027",
-      measurementId: "G-JF32SWZCRM"
-    };
+// ✅ Initialize
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getDatabase(app);
 
+// 📦 DOM Elements
+const welcomeText = document.getElementById("welcome");
+const buddiesContainer = document.getElementById("buddies-container");
 
+// ✅ Single Auth Check
+onAuthStateChanged(auth, (user) => {
+  if (!user) {
+    // 🚫 Not logged in — redirect
+    window.location.href = "login.html";
+    return;
+  }
 
+  // ✅ Logged in — fetch and display user data
+  console.log("Logged in:", user.email);
+  const uid = user.uid;
 
-
-
-
-
-
-
-
-
-   const app = initializeApp(firebaseConfig);
-   const auth = getAuth(app);
-   const db = getDatabase(app);
-
-  const welcomeText = document.getElementById("welcome");
-  const buddiesContainer = document.getElementById("buddies-container");
-
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      const uid = user.uid;
-      const userRef = ref(db, 'users/' + uid);
-      onValue(userRef, (snapshot) => {
-        const data = snapshot.val();
-        welcomeText.textContent = `Welcome, ${data.name || 'User'}!`;
-      });
-
-      const buddiesRef = ref(db, 'users');
-      onValue(buddiesRef, (snapshot) => {
-        buddiesContainer.innerHTML = '';
-        snapshot.forEach(child => {
-          const buddy = child.val();
-          if (child.key !== uid) {
-            buddiesContainer.innerHTML += `
-              <div class="buddy-card">
-                <img src="${buddy.photo || 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMwAAADACAMAAAB/Pny7AAAARVBMVEX6+vqPj4////+ZmZnd3d2MjIyJiYmGhob29vbw8PDk5OTFxcWDg4OTk5Ojo6Pz8/PR0dGysrK9vb3Ly8vq6uqsrKzX19edyqDsAAAEeUlEQVR4nO2c2XalIBBFtRicEAWH///URtPJnZIr4kB5V+2XJN0vdVYVUMKBJCEIgiAIgiAIgiAIgiAIgiAIgiAIglgJ/BA7ko04BU3J287R8jK/sCCAnFujGatnGNNDxZNL6gEoLatT4Uhn5t9qZvvLyQHg+qbjxvRvuryWHOhr9azjhtL5ddRAbt5ImfKjbOwYveEse6vFkekydpQ+QNKlcklLmsq6jR3pMpDb12H/q5q0SrCPnNxILy3TxFbFDnYJszhcbmqkRZ0asB7D5U5Nh1gNtP55mdVkJVo1UPiOlx81InbMfwJspRanRiNNDVSrtTg1LUo1UKxPjBPDUPZpYAO0OCqEYqDUQWKkLvCpCRoxM/gWGyiGNevlfWpMEzv4Z2CsAxMjGEeXmmrd4n+fGmx1Fl5lCOsMytAqm7qAHldqYAxOjFODbdB0wUMmTbMRl5jcbhHTxQ7/kcZsKLPM5rHjf2DDZIZvOivCGjMSczifJeaTxsxHzWbNpnUG29bmpg4A2R46jBvEYOvNNnXNDNu+Zq8/53smScJnAIlt/CfQhmpBuAcAfWgPIIcidvAvrDuauc8Mwi1N4CFbzQh3AGYgrKMRKM8CoQw7BehjB/4rQccAGEfMTBNychY76L8AvnrhlNg6mRtQvTcAvaBwHgL+Z8HO9KwF5Uz2DTR6hRplcH1hvlD4q1EDum75CfBW4/KCuchmIPfrBKRF79BKJvdcVS+uN6JuL+I6Ba7fmwFlPeBdX56BvNJ/e4Kk0N0VSuwH6CstftMjMqErjE3/OwD61tRZ9lBuMsuYaa9nOZ/kNGVrdaqUyhzuR6rtON1uiB1ZGJDkRV+OXeVox7Iv8kuNlVfg118JgiDQAbsRXUjel3wnyj7m7brpjtyg2W5oU0VrdaAwzLXA+yFlymycz0/grgde+ghbixB1jJYaWrW7lFlOhJsbMK7c7/MnOzs3UCx/54dy+vUAMEdJSU8/sgk9JvMUw04ttNAbGb6catvOtziylpHmRC2h10u8xZx5mn7skDn5BNqJOVJLOj0ZQGJIDD9u/Y8g5pMmgCAzxioxp2nZ4Mfy41zX1iZPtoeYc4+ht3iyPcSc2jZ/VKMZfivTh5Ndm9AfOZ1Jfa5zA8yRdXaypebIOhP12d7g/Lg6O/8pCuiOExPBtH1UamK8EXLYLqCKsj87bLgy80ZLFHcgFH7PZa1DsDjuQOD7F5qQ0Xw17e5qVMQL6Gutv0vEvUpX7fkpIGK/dVTtd3omoj8TCC3bKTlSx3+wAfiQ7ZAcIQ0G2yYUVbp5+cxYh8PlDMCN3FRrmbQY0vIFNKPOwi+dZgPHkZZvGj6ooGLLJimxo3+lN2rtGiqVsjjvnLnBM2rlP7UJpTSP7mX6GxfaONRfTpg3Ktx/CsEMj2/LWsAF2Hfzy+Zf72Y/Wn0mjdNr57Yt0Cv5AuZH59vKmkHrOwuX+2MwtpqN2tdQ8s1/b1/Rl+Vsr3M/+iZBYfkLB49tkSAIgiAIgiAIgiAIgiAIgiAIgiCIC/IPYNg9bl17nywAAAAASUVORK5CYII='}" alt="${buddy.name}">
-                <div class="buddy-info">
-                  <h4>${buddy.name}</h4>
-                  <p class="location"> ${buddy.age} year , ${buddy.location},${buddy.Country}</p>
-                  <p>${buddy.Workouts}</p>
-                  <p><strong>Mission:</strong>${buddy.activityLevel}</p>
-
-
-                  <div class="tags">
-                    ${(buddy.tags || ['#Fitness']).map(tag => `<span>${tag}</span>`).join('')}
-                  </div>
-                   <button class="message-btn">Message</button>
-                </div>
-              </div>
-            `;
-          }
-        });
-      });
-    } else {
-      location.href = 'login.html';
-    }
+  // 👤 Get current user info
+  const userRef = ref(db, 'users/' + uid);
+  onValue(userRef, (snapshot) => {
+    const data = snapshot.val();
+    welcomeText.textContent = `Welcome, ${data.name || 'User'}!`;
   });
+
+  // 🤝 Get other buddies
+  const buddiesRef = ref(db, 'users');
+  onValue(buddiesRef, (snapshot) => {
+    buddiesContainer.innerHTML = ''; // Clear previous list
+    snapshot.forEach(child => {
+      const buddy = child.val();
+
+      // Exclude current user from list
+      if (child.key !== uid) {
+        buddiesContainer.innerHTML += `
+          <div class="buddy-card">
+            <img src="${buddy.photo || 'data:image/png;base64,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'}" alt="">
+            <div class="buddy-info">
+              <h4>${buddy.name}</h4>
+              <p class="location">${buddy.age} years, ${buddy.location}, ${buddy.Country}</p>
+              <p>${buddy.Workouts}</p>
+              <p><strong>Mission:</strong> ${buddy.activityLevel}</p>
+              <div class="tags">
+                ${(buddy.tags || ['#Fitness']).map(tag => `<span>${tag}</span>`).join('')}
+              </div>
+              <button class="message-btn" onclick="window.location.href='message.html'">Message</button>
+
+            </div>
+          </div>
+        `;
+      }
+    });
+  });
+});
+
 </script>
 </html>

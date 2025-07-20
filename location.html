@@ -1,62 +1,100 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
   <title>Nearby Gym Finder</title>
   <style>
-    * {
-      box-sizing: border-box;
-      font-family: 'Segoe UI', sans-serif;
-    }
     body {
-      margin: 0;
-      background: #f1f4f9;
-      padding: 2rem;
-    }
-    .container {
-      max-width: 800px;
-      margin: auto;
-      background: white;
-      padding: 2rem;
-      border-radius: 12px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-    }
-    h1 {
-      text-align: center;
-      color: #2e86c1;
-      margin-bottom: 1.5rem;
-    }
-    input {
-      width: 100%;
-      padding: 1rem;
-      font-size: 1rem;
-      margin-bottom: 1rem;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-    }
-    .gym-list {
-      display: grid;
-      gap: 1rem;
-    }
-    .gym-card {
-      background-color: #ebf5fb;
-      border-left: 6px solid  #3498db;
-      border-radius: 8px;
-      padding: 1rem;
-      transition: transform 0.2s;
-    }
-    .gym-card:hover {
-      transform: translateY(-3px);
-    }
-    .gym-card h3 {
-      margin-top: 0;
-      color: #1b5e20;
-    }
-    .not-found {
-      text-align: center;
-      color: #ff6f00;
-    }
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: radial-gradient(circle at top left, #111729, #0a0f24);
+  color: #ffffff;
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 700px;
+  margin: 50px auto;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  padding: 30px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+h1 {
+  text-align: center;
+  font-size: 30px;
+  margin-bottom: 25px;
+  background: linear-gradient(to right, #00f5a0, #00d9f5);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+#searchInput {
+  width: 100%;
+  padding: 14px 16px;
+  font-size: 16px;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  margin-bottom: 25px;
+  transition: background-color 0.3s ease;
+}
+
+#searchInput::placeholder {
+  color: #bbb;
+}
+
+#searchInput:focus {
+  background-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 0 8px #00f5a0;
+}
+
+.gym-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.gym-card {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 20px;
+  border-radius: 12px;
+  color: #fff;
+  box-shadow: 0 0 12px rgba(0, 245, 160, 0.3);
+  border: 1px solid rgba(0, 245, 160, 0.2);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.gym-card:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(0, 245, 160, 0.5);
+}
+
+.gym-card h3 {
+  margin: 0 0 8px;
+  color: #00f5a0;
+}
+
+.gym-card p {
+  margin: 6px 0;
+  font-size: 15px;
+}
+
+.not-found {
+  background: #ff4d4d;
+  padding: 12px;
+  text-align: center;
+  border-radius: 8px;
+  font-weight: bold;
+  color: white;
+}
+
   </style>
 </head>
 <body>
@@ -67,43 +105,33 @@
 </div>
 
 <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+    import { getDatabase } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js";
 
+    const firebaseConfig = {
+      apiKey: "AIzaSyDvJ5icMfg6QOSq1_RrdsY2qMnCNkdRyzs",
+      authDomain: "fitnessbuddyapp-f08eb.firebaseapp.com",
+      databaseURL: "https://fitnessbuddyapp-f08eb-default-rtdb.firebaseio.com",
+      projectId: "fitnessbuddyapp-f08eb",
+      storageBucket: "fitnessbuddyapp-f08eb.appspot.com",
+      messagingSenderId: "709503176678",
+      appId: "1:709503176678:web:8fa732501ec7ca3a67d027",
+      measurementId: "G-JF32SWZCRM"
+    };
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
-  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
-  import { getDatabase, ref, get, push, set } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js";
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth();
+    const db = getDatabase(app);
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyDvJ5icMfg6QOSq1_RrdsY2qMnCNkdRyzs",
-    authDomain: "fitnessbuddyapp-f08eb.firebaseapp.com",
-    databaseURL: "https://fitnessbuddyapp-f08eb-default-rtdb.firebaseio.com",
-    projectId: "fitnessbuddyapp-f08eb",
-    storageBucket: "fitnessbuddyapp-f08eb.appspot.com",
-    messagingSenderId: "709503176678",
-    appId: "1:709503176678:web:8fa732501ec7ca3a67d027",
-    measurementId: "G-JF32SWZCRM"
-  };
+    onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        window.location.href = "login.html";
+      } else {
+        console.log("User is logged in:", user.email);
+      }
+    });
 
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth();
-  const db = getDatabase(app);
-
-
-
-
-
-  onAuthStateChanged(auth, (user) => {
-    if (!user) {
-      window.location.href = "login.html"; // Redirect to login page
-    } else {
-      // ✅ User is logged in — you can show progress or fetch user data here
-      console.log("User is logged in:", user.email);
-    }
-  });
-
-
-
-    // Static Gym Data
     const gyms = [
       { name: "Gold's Gym", city: "Delhi", postal: "110001", address: "Connaught Place" },
       { name: "Anytime Fitness", city: "Mumbai", postal: "400001", address: "Churchgate" },
@@ -114,7 +142,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/fireba
       { name: "Alpha Gym", city: "Jaipur", postal: "302001", address: "MI Road" }
     ];
 
-    function searchGyms() {
+    window.searchGyms = function () {
       const input = document.getElementById("searchInput").value.toLowerCase();
       const gymList = document.getElementById("gymList");
       gymList.innerHTML = "";
@@ -140,7 +168,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/fireba
         `;
         gymList.appendChild(div);
       });
-    }
+    };
   </script>
 </body>
 </html>
