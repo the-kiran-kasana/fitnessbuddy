@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <style>
+/* Reset and global styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+}
+
+header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  padding: 10px 20px;
+  z-index: 10;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  align-items: center;
+}
+
+.logo {
+  color: #fff;
+  font-size: 1.5rem;
+  font-weight: bold;
+  border: 2px solid #fff;
+  padding: 10px;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+}
+
+.nav-links li a {
+  color: #fff;
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.nav-links li a:hover {
+  color: #00f6ff;
+}
+
+.slide {
+  width: 100%;
+  height: auto;
+  object-position: center;
+  transition: opacity 1s ease-in-out;
+}
+
+.section_intro {
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
+    rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 40px auto;
+  background-color: #edefef;
+  max-width: 90%;
+  padding: 20px;
+}
+
+.bmi-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 70vh;
+  background: url('https://i.pinimg.com/736x/cf/43/f8/cf43f8953f18b4bbab6fe0bbdc001c2b.jpg') no-repeat center/cover;
+  padding: 20px;
+}
+
+.bmi-card {
+  background: #faf6f8;
+  backdrop-filter: blur(15px);
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  max-width: 400px;
+  width: 100%;
+}
+
+.bmi-card h2,
+#bmiResult {
+  color: #000;
+  margin-bottom: 1rem;
+  font-weight: bold;
+}
+
+.bmi-card input,
+.bmi-card button {
+  width: 100%;
+  padding: 10px;
+  margin: 0.5rem 0;
+  border: none;
+  border-radius: 8px;
+  outline: none;
+}
+
+.bmi-card button {
+  background: #ec5691;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.footer {
+  background: #000;
+  color: #fff;
+  padding: 2rem 1rem;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.footer-content {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+.footer-section {
+  flex: 1 1 200px;
+}
+
+.footer-section h2,
+.footer-section h3 {
+  color: #ff6161;
+  margin-bottom: 1rem;
+}
+
+.footer-section p,
+.footer-section a {
+  font-size: 0.9rem;
+  color: #ccc;
+  line-height: 1.6;
+  text-decoration: none;
+}
+
+.footer-section a:hover {
+  color: #fff;
+}
+
+.footer-section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-section ul li {
+  margin-bottom: 0.5rem;
+}
+
+.footer-section.apps img,
+.footer-section.social img {
+  width: 40px;
+  margin-right: 10px;
+  margin-top: 10px;
+}
+
+.footer-bottom {
+  text-align: center;
+  margin-top: 2rem;
+  font-size: 0.8rem;
+  border-top: 1px solid #333;
+  padding-top: 1rem;
+  color: #888;
+}
+
+.training-section {
+  width: 90%;
+  max-width: 600px;
+  padding: 30px;
+  background: #ffffff;
+  text-align: center;
+  margin: auto;
+}
+
+.training-section h1 {
+  font-size: 2rem;
+  margin-bottom: 15px;
+  color: #2d2d2d;
+}
+
+.training-section p {
+  font-size: 1.1rem;
+  color: #555;
+  line-height: 1.6;
+}
+
+.shortImg {
+  max-width: 100%;
+  height: auto;
+}
+
+.section3 {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  gap: 10px;
+  padding: 10px;
+  background: #f9f9f9;
+}
+
+.main-section {
+  background: url('https://i.pinimg.com/736x/f8/b8/7d/f8b87de1a2ecc7b4e54e6940a3277460.jpg') no-repeat center/cover;
+  min-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 100px 20px 60px;
+  color: #fff;
+  text-align: center;
+}
+
+.main-content h1 {
+  font-size: 3rem;
+  margin-bottom: 10px;
+}
+
+.main-content p {
+  font-size: 1.2rem;
+  margin-bottom: 30px;
+}
+
+.get-start-btn-container {
+  margin-top: 10px;
+}
+
+.get-start-btn {
+  padding: 12px 30px;
+  border: 2px solid #fff;
+  background: transparent;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: background 0.3s, color 0.3s;
+}
+
+.get-start-btn:hover {
+  background: #fff;
+  color: #000;
+}
+
+.about-section,
+.contact-section {
+  padding: 80px 20px;
+  text-align: center;
+  background-color: #f5f5f5;
+}
+
+.about-section h2,
+.contact-section h2 {
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.about-section p,
+.contact-section p {
+  font-size: 1.1rem;
+  max-width: 800px;
+  margin: auto;
+  color: #555;
+}
+
+.contact-section {
+  background-color: #fdfefe;
+  color: #333;
+}
+
+.contact-section h2 {
+  font-size: 2.2rem;
+}
+
+.contact-details {
+  font-size: 1rem;
+  line-height: 1.8;
+}
+
+.contact-details a {
+  color: #0077cc;
+  text-decoration: none;
+}
+
+.contact-details a:hover {
+  text-decoration: underline;
+}
+
+/* Responsive Styles */
+@media (max-width: 992px) {
+  .main-content h1 {
+    font-size: 2.4rem;
+  }
+
+  .main-content p {
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .main-section {
+    padding: 80px 15px;
+  }
+
+  .main-content h1 {
+    font-size: 2rem;
+  }
+
+  .main-content p {
+    font-size: 1rem;
+  }
+
+  .get-start-btn {
+    padding: 10px 25px;
+    font-size: 0.95rem;
+  }
+
+  .nav-links {
+    flex-direction: column;
+    position: absolute;
+    background: #111;
+    top: 60px;
+    right: 0;
+    width: 100%;
+    display: none;
+    padding: 10px 0;
+  }
+
+  .nav-links.show {
+    display: flex;
+  }
+
+  .nav-toggle {
+    color: #fff;
+    font-size: 1.5rem;
+    cursor: pointer;
+    display: block;
+  }
+
+  .section_intro,
+  .bmi-card {
+    margin-left: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .main-content h1 {
+    font-size: 1.7rem;
+  }
+
+  .main-content p {
+    font-size: 0.95rem;
+  }
+
+  .get-start-btn {
+    padding: 10px 20px;
+    font-size: 0.9rem;
+  }
+}
+
+  </style>
+</head>
+<body>
+
+<header>
+    <nav class="navbar">
+        <div class="logo" onclick="scrollToSection('main')">FitnessBuddy</div>
+        <ul class="nav-links">
+            <li><a href="main page.html">Home</a></li>
+            <li><a href="#contact">Contact</a></li>
+            <li><a href="registration.html">Sign Up</a></li>
+            <li><a href="login.html">Login</a></li>
+
+        </ul>
+    </nav>
+</header>
+
+<section class="main-section">
+    <div class="main-content">
+        <h1>BUILD YOUR BODY STRONG</h1>
+        <p>The pain you feel today will be the strength you feel tomorrow.</p>
+    </div>
+
+
+    <div class="get-start-btn-container">
+        <button class="get-start-btn" onclick="window.location.href='login.html'">Get Started</button>
+
+    </div>
+</section>
+
+
+
+
+<section class="training-section">
+    <h1>Come Train With Us</h1>
+    <p>
+        The Fitness Training Club App helps you reach your fitness goals with expertly
+        designed workouts from our world-class Fitness Master Trainers. NTC is perfect
+        for training at home, in the gym or on the road, with everything from bodyweight-only
+        to full-equipment workouts for everyone at all fitness levels.
+    </p>
+</section>
+
+
+        <img  style="margin-left:200px;"src="https://i.pinimg.com/1200x/70/13/23/7013233f0e34b44a006bafb52315cc9e.jpg" alt="Slide 3" />
+
+
+
+
+<section class="training-section">
+    <h1>Flexible Training Plans Tailored to You</h1>
+    <p>
+        Start training with a personal plan that guides you—while adjusting to your progress,
+        schedule and other activities. With NTC, you get access to four 4–6 week training plans.
+        Whether you have access to a full gym or are training from the comfort of your home,
+        there's a routine that fits you and your schedule so that you can reach your goals.
+    </p>
+</section>
+
+
+<section class="section3">
+
+    <div class="training-section">
+    <img class="shortImg" src="https://static.nike.com/a/images/f_auto/dpr_2.0,cs_srgb/h_465,c_limit/09acbcdc-5128-41c1-8e6a-6befd8abe779/nike-training-club-app-home-workouts-more.jpg" alt="Slide 1" />
+    <h2>Start Up</h2>
+    <p>Kick it off with 4 weeks of guided, well-balanced workouts to get you fit.</p>
+    </div>
+
+    <div class="training-section">
+    <img class="shortImg" src="https://static.nike.com/a/images/f_auto/dpr_2.0,cs_srgb/h_465,c_limit/83ee40cd-8f16-42bb-a9f0-54f1f0aaecf3/nike-training-club-app-home-workouts-more.jpg" alt="Slide 2" />
+    <h2>Lean Fit</h2>
+    <p>Get lean and fit over 6 weeks with a balanced plan that builds endurance.</p>
+    </div>
+
+    <div class="training-section">
+    <img class="shortImg" src="https://static.nike.com/a/images/f_auto/dpr_2.0,cs_srgb/h_465,c_limit/cbd7e3ad-3df0-4c14-b7f8-fb9aa222b4cf/nike-training-club-app-home-workouts-more.jpg" alt="Slide 3" />
+    <h2>Bodyweight Only</h2>
+    <p>Push your strength and improve muscle tone over 4 weeks—all without weights.</p>
+    </div>
+
+    <div class="training-section">
+    <img class="shortImg" src="https://static.nike.com/a/images/f_auto/dpr_2.0,cs_srgb/h_465,c_limit/7f83259a-7cfd-46e1-81e0-a38885dd9c36/nike-training-club-app-home-workouts-more.jpg" alt="Slide 4" />
+    <h2>Gym Strong</h2>
+    <p>Build full-body strength with a focus on weight training over 8 weeks.</p>
+    </div>
+
+</section>
+
+
+
+<img  style="margin-left:200px;"src="https://i.pinimg.com/1200x/d9/ab/33/d9ab333a73701b7b0f0827d900c93c9b.jpg" alt="Slide 3" />
+
+
+
+
+
+<section class="training-section">
+    <h1>Train the Way You Want</h1>
+    <p>
+        Energise your routine with our growing library of workouts led by our world-class Nike
+        Master Trainers. With NTC, you get access to over 190 free workouts across strength,
+        endurance, yoga and mobility targeting your abs, arms, shoulders, glutes and legs.
+        Sessions range from 15–45 minutes and are designed to help you see and feel results.
+    </p>
+</section>
+
+
+<section class="section3">
+
+    <div class="training-section">
+        <img class="shortImg" src="https://static.nike.com/a/images/f_auto/dpr_2.0,cs_srgb/h_465,c_limit/eed89cc3-bfb3-4499-a7de-4c3011b33a39/nike-training-club-app-home-workouts-more.jpg" alt="Slide 1" />
+        <h2>Yoga</h2>
+        <p>Deepen your practice through traditional yoga flows with a Nike spin.</p>
+    </div>
+
+    <div class="training-section">
+        <img class="shortImg" src="https://static.nike.com/a/images/f_auto/dpr_2.0,cs_srgb/h_465,c_limit/9a799228-30ae-411b-95dc-5c625b67d97e/nike-training-club-app-home-workouts-more.jpg" alt="Slide 2" />
+        <h2>Cardio and HIT</h2>
+        <p>Build your full body endurance with high-intensity training drills, kickboxing and more.</p>
+    </div>
+
+    <div class="training-section">
+        <img class="shortImg" src="https://static.nike.com/a/images/f_auto/dpr_2.0,cs_srgb/h_465,c_limit/28aca81b-2c57-4a08-ab33-59a755fe348f/nike-training-club-app-home-workouts-more.jpg" alt="Slide 3" />
+        <h2>Strength Training</h2>
+        <p>Challenge yourself with targeted workouts for your arms, core and glutes.</p>
+    </div>
+
+    <div class="training-section">
+        <img class="shortImg" src="https://static.nike.com/a/images/f_auto/dpr_2.0,cs_srgb/h_465,c_limit/5a6a6c2b-8303-4547-a4e2-862537d39566/nike-training-club-app-home-workouts-more.jpg" alt="Slide 4" />
+        <h2>Mobility</h2>
+        <p>Improve your movement quality and flexibility with active recovery sessions.</p>
+    </div>
+
+</section>
+
+
+
+
+<section class="bmi-section">
+    <div class="bmi-card">
+        <b><h3>BODY AND BMI CALCULATE</h3></b>
+        <form id="bmiForm">
+            <input type="number" id="height" placeholder="Height (cm)" required />
+            <input type="number" id="weight" placeholder="Weight (kg)" required />
+            <button type="submit">Calculate BMI</button>
+        </form>
+        <p id="bmiResult"></p>
+    </div>
+</section>
+
+
+
+
+<section id="contact" class="contact-section">
+    <h2>Contact Us</h2>
+    <p>
+        Have questions or feedback? We'd love to hear from you.
+    </p>
+    <div class="contact-details">
+        📧 Email: <a href="mailto:support@fitnessbuddy.com">support@fitnessbuddy.com</a><br />
+        📞 Phone: <a href="tel:+919876543210">+91-9876543210</a><br />
+        📍 Location: FitnessBuddy HQ, New Delhi, India
+    </div>
+</section>
+
+
+
+
+<footer class="footer">
+    <div class="footer-content">
+        <div class="footer-section about">
+            <h2><span style="color:#FF6161;">FitnessBuddy</span></h2>
+            <p>
+                At fitnesbudy, we make group workouts fun, daily food healthy & tasty, mental fitness easy with yoga & meditation, Medical & lifestyle care hassle-free.
+                <strong>#BeBetterEveryDay</strong>
+            </p>
+        </div>
+
+        <div class="footer-section links">
+            <h3>For Business</h3>
+            <ul>
+                <li><a href="#">cult.fit for business</a></li>
+                <li><a href="#">cult.fit franchise</a></li>
+                <li><a href="#">corporate partnerships</a></li>
+                <li><a href="#">cult pass network</a></li>
+                <li><a href="#">t&c for business</a></li>
+                <li><a href="#">partner.fit</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-section links">
+            <h3>Explore</h3>
+            <ul>
+                <li><a href="#">Blogs</a></li>
+                <li><a href="#">Security</a></li>
+                <li><a href="#">Careers</a></li>
+                <li><a href="#">Contact us</a></li>
+                <li><a href="#">Privacy Policy</a></li>
+                <li><a href="#">cult BMI Calculator</a></li>
+                <li><a href="#">Terms & Conditions</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-section apps">
+            <h3>Download App</h3>
+            <a href="https://www.apple.com/in/app-store/"><img src="https://upload.wikimedia.org/wikipedia/commons/5/5f/Available_on_the_App_Store_%28black%29_SVG.svg" alt="App Store" /></a>
+            <a href="https://play.google.com/store"><img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Play Store" /></a>
+        </div>
+
+        <div class="footer-section social">
+            <h3>Follow Us</h3>
+            <a href="https://twitter.com" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/733/733579.png" alt="twitteer" /></a>
+            <a href="https://instagram.com" target="_blank"><img src="https://cdn-icons-png.flaticon.com/512/733/733558.png" alt="Instagram" /></a>
+            <a href="https://www.youtube.com/" target="_blank"><img src="https://i.pinimg.com/736x/6e/d3/0c/6ed30c9ea5a745a8b2f6ef10bc0b8478.jpg" alt="Youtube" /></a>
+
+        </div>
+    </div>
+    <p class="footer-bottom">&copy; 2025 cult.fit | All rights reserved</p>
+</footer>
+
+
+
+</body>
+<script>
+
+
+  document.getElementById("bmiForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+    const height = parseFloat(document.getElementById("height").value) / 100;
+    const weight = parseFloat(document.getElementById("weight").value);
+    const bmi = (weight / (height * height)).toFixed(2);
+    document.getElementById("bmiResult").innerText = `Your BMI is ${bmi}`;
+  });
+
+
+
+
+    function scrollToSection(id) {
+      const section = document.getElementById(id);
+      section.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    document.querySelectorAll('.nav-links a').forEach(link => {
+      link.addEventListener('click', (e) => {
+        const href = link.getAttribute('href');
+        if (href.startsWith('#')) {
+          e.preventDefault();
+          scrollToSection(href.substring(1));
+          toggleNav(false); // Close nav if open
+        }
+      });
+    });
+
+    function toggleNav(forceClose = null) {
+      const navLinks = document.getElementById('navLinks');
+      if (forceClose === false) {
+        navLinks.classList.remove('show');
+      } else {
+        navLinks.classList.toggle('show');
+      }
+    }
+</script>
+
+</script>
+
+</script>
+</html>

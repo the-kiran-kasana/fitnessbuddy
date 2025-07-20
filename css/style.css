@@ -1,0 +1,64 @@
+body {
+  margin: 0;
+  font-family: "Segoe UI", sans-serif;
+  background: #f9f9f9;
+  color: #333;
+}
+
+nav {
+  background: #2e2e2e;
+  color: white;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+button {
+  background: transparent;
+  border: 2px solid #2e2e2e;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+button:hover {
+  background: #2e2e2e;
+  color: white;
+}
+
+.matching-section {
+  padding: 2rem;
+  text-align: center;
+}
+.user-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.user-card {
+  background: white;
+  padding: 1rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+.user-card button {
+  margin-top: 10px;
+  width: 100%;
+}
+
+.bmi-section {
+  text-align: center;
+  margin: 2rem auto;
+}
+.bmi-section input {
+  margin: 5px;
+  padding: 0.5rem;
+}
+footer {
+  text-align: center;
+  padding: 1rem;
+  background: #eee;
+  margin-top: 2rem;
+}

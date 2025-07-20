@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>BMI Tracker</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #000428, #004e92);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      background: rgba(0, 0, 0, 0.6);
+      padding: 2rem;
+      border-radius: 20px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+      width: 95%;
+      max-width: 800px;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+      color: #f8f9fa;
+    }
+
+    .form-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .form-group {
+      flex: 1 1 45%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    label {
+      font-weight: 500;
+      margin-bottom: 0.4rem;
+    }
+
+    input, select {
+      padding: 0.6rem;
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
+    }
+
+    .btn {
+      width: 100%;
+      margin-top: 2rem;
+      padding: 0.8rem;
+      background: #1e90ff;
+      color: white;
+      font-size: 1rem;
+      font-weight: bold;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .btn:hover {
+      background: #1c75d8;
+    }
+
+    #bmi-result {
+      margin-top: 2rem;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 1rem;
+      border-radius: 10px;
+      border-left: 4px solid #1e90ff;
+    }
+
+    #bmi-result p {
+      margin: 0.5rem 0;
+    }
+
+    @media (max-width: 700px) {
+      .form-group {
+        flex: 1 1 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h2>🏋️‍♀️ BMI & Progress Tracker</h2>
+  <div class="form-grid">
+    <div class="form-group">
+      <label for="height">Height (cm)</label>
+      <input type="number" id="height" placeholder="e.g. 175" />
+    </div>
+
+    <div class="form-group">
+      <label for="weight">Weight (kg)</label>
+      <input type="number" id="weight" placeholder="e.g. 70" />
+    </div>
+
+    <div class="form-group">
+      <label for="targetBmi">Target BMI</label>
+      <input type="number" id="targetBmi" placeholder="e.g. 22.5" step="0.1" />
+    </div>
+
+    <div class="form-group">
+      <label for="workoutMinutes">Workout Duration (min)</label>
+      <input type="number" id="workoutMinutes" placeholder="e.g. 45" />
+    </div>
+
+    <div class="form-group" style="flex: 1 1 100%;">
+      <label for="workoutType">Workout Type</label>
+      <select id="workoutType">
+        <option value="cardio">Cardio</option>
+        <option value="strength">Strength</option>
+        <option value="yoga">Yoga</option>
+      </select>
+    </div>
+  </div>
+
+  <button class="btn" onclick="calculateBMI()">Calculate</button>
+
+  <div id="bmi-result"></div>
+</div>
+
+<script type="module">
+
+
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+  import { getDatabase, ref, get, push, set } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyDvJ5icMfg6QOSq1_RrdsY2qMnCNkdRyzs",
+    authDomain: "fitnessbuddyapp-f08eb.firebaseapp.com",
+    databaseURL: "https://fitnessbuddyapp-f08eb-default-rtdb.firebaseio.com",
+    projectId: "fitnessbuddyapp-f08eb",
+    storageBucket: "fitnessbuddyapp-f08eb.appspot.com",
+    messagingSenderId: "709503176678",
+    appId: "1:709503176678:web:8fa732501ec7ca3a67d027",
+    measurementId: "G-JF32SWZCRM"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth();
+  const db = getDatabase(app);
+
+
+
+
+
+  onAuthStateChanged(auth, (user) => {
+    if (!user) {
+      window.location.href = "login.html"; // Redirect to login page
+    } else {
+      // ✅ User is logged in — you can show progress or fetch user data here
+      console.log("User is logged in:", user.email);
+    }
+  });
+
+    function calculateBMI() {
+      const height = parseFloat(document.getElementById('height').value) / 100;
+      const weight = parseFloat(document.getElementById('weight').value);
+      const targetBmi = parseFloat(document.getElementById('targetBmi').value);
+      const minutes = parseFloat(document.getElementById('workoutMinutes').value);
+      const workoutType = document.getElementById('workoutType').value;
+
+      if (!height || !weight || !targetBmi || !minutes) {
+        document.getElementById('bmi-result').innerHTML = `<p style="color:red;">Please fill all fields.</p>`;
+        return;
+      }
+
+      const currentBmi = weight / (height * height);
+      const targetWeight = targetBmi * (height * height);
+      const weightToLose = weight - targetWeight;
+
+      const calorieRates = {
+        cardio: 10,
+        strength: 8,
+        yoga: 5
+      };
+
+      const caloriesBurnt = calorieRates[workoutType] * minutes;
+      const weightLost = caloriesBurnt / 7700;
+      const projectedSessions = Math.ceil(weightToLose / weightLost);
+
+      const result = `
+        <p><strong>Current BMI:</strong> ${currentBmi.toFixed(2)}</p>
+        <p><strong>Target Weight:</strong> ${targetWeight.toFixed(1)} kg</p>
+        <p><strong>Calories Burnt Today:</strong> ${caloriesBurnt.toFixed(0)} kcal</p>
+        <p><strong>Estimated Weight Loss:</strong> ${weightLost.toFixed(2)} kg</p>
+        <p><strong>Sessions Needed:</strong> ${projectedSessions}</p>
+        <p><strong>Estimated Duration:</strong> ~${Math.ceil(projectedSessions / 4)} weeks (4 sessions/week)</p>
+      `;
+
+      document.getElementById('bmi-result').innerHTML = result;
+    }
+  </script>
+
+</body>
+</html>

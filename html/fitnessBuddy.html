@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fitness Buddy Match</title>
+  <link rel="stylesheet" href="../css/style.css">
+
+  <style>
+
+    :root {
+  --primary: #c1ff00;
+  --background: #fff;
+  --card-bg: #1c1c1c;
+  --text: #fff;
+  --tag-bg: #333;
+}
+
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+
+body {
+  background-size: cover;
+  font-family: sans-serif;
+  margin: 0;
+  padding: 0;
+  color: white;
+
+}
+
+.main-container{
+  background: #f4f6f6;
+}
+
+.navbar {
+  background: #181818;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar h2 {
+  color: var(--primary);
+}
+
+.nav-links {
+  display: flex;
+  gap: 2rem;
+  list-style: none;
+}
+
+.nav-links a {
+  color: var(--text);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.hero {
+  padding: 5rem;
+  text-align: center;
+  background: #f2f3f4 ;
+  color:white;
+  font-size:30px;
+  background-image: url("https://i.pinimg.com/736x/a7/4b/ee/a74beee7da24d9fd8800858b62512e84.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.dashboard {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+  margin: 2rem;
+}
+
+.card {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  width: 250px;
+  text-align: center;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px;
+  color:black;
+}
+
+.action-btn {
+  margin-top: 1rem;
+  background: linear-gradient(135deg,  #e8e7eb,  #9c9c9e );
+  color: #111;
+  padding: 0.5rem 1.5rem;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: bold;
+}
+.buddies-section {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: auto;
+  color:black;
+  font-size:15px;
+}
+
+.buddies-section h2 {
+  margin-bottom: 1rem;
+}
+
+.buddies-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2.5rem;
+}
+
+
+.buddy-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  transition: transform 0.3s ease;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 2px 0px;
+  color:black;
+}
+
+.buddy-card:hover {
+  transform: translateY(-6px);
+}
+
+
+.buddy-card img {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+
+.buddy-info h4 {
+  color: var(--primary);
+  margin-bottom: 4px;
+}
+
+.tags {
+  margin-top: 0.5rem;
+}
+
+.tags span {
+  background: #000;
+  color: var(--primary);
+  font-size: 0.75rem;
+  padding: 4px 10px;
+  margin-right: 6px;
+  border-radius: 14px;
+}
+
+
+
+/* Responsive */
+@media (max-width: 768px) {
+  .dashboard, .buddies-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .nav-links {
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
+
+
+
+.logo {
+  color: #fff;
+  font-size: 1.5rem;
+  font-weight: bold;
+  border: 2px solid #fff;
+  padding: 10px;
+}
+
+
+.buddies-section {
+  padding: 2rem;
+  max-width: 900px;
+  margin: auto;
+   background: white;
+}
+
+.buddies-section h1 {
+  text-align: center;
+  font-size: 24px;
+  margin-bottom: 1.5rem;
+  color: #222;
+}
+
+.buddies-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Buddy Card */
+.buddy-card {
+  background:  #f8f9f9 ;
+  border-radius: 16px;
+
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 2px 0px;
+  transition: transform 0.2s ease-in-out;
+}
+
+.buddy-card:hover {
+  transform: translateY(-4px);
+}
+
+/* Profile Image */
+.buddy-card img {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+/* Text Info */
+.buddy-info h4 {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #222;
+}
+
+.buddy-info p {
+  margin: 3px 0;
+  font-size: 0.95rem;
+  color: #444;
+}
+
+.buddy-info p strong {
+  font-weight: 600;
+  color: #111;
+}
+
+/* Optional Tag Style (if needed) */
+.tags {
+  margin-top: 6px;
+}
+
+.tags span {
+  background-color: #e0e0e0;
+  color: #333;
+  font-size: 0.75rem;
+  padding: 3px 10px;
+  border-radius: 12px;
+  margin-right: 6px;
+   display:inline;
+}
+
+
+.message-btn {
+  background-color: #007bff;
+  color: white;
+  font-size: 0.75rem;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  margin-top: 8px;
+}
+
+.message-btn:hover {
+  background-color: #0056b3;
+}
+
+
+
+.buddy-card:hover{
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+}
+
+
+
+.location {
+  font-size: 0.9em;
+  color: #666;
+  margin: 5px 0;
+}
+
+
+
+
+  </style>
+</head>
+<body>
+
+<!-- Navigation Bar -->
+<nav class="navbar">
+  <div class="logo" onclick="scrollToSection('main')">FitnessBuddy</div>
+  <ul class="nav-links">
+    <li><a href="../main%20page.html"></a></li>
+    <li><a href="message.html">Messaging</a></li>
+    <li><a href="login.html">Logout</a></li>
+    <li><a href="ProfileCreation.html">Profile</a></li>
+  </ul>
+</nav>
+
+
+
+
+<!-- Hero Section -->
+<header class="hero">
+  <h1 id="welcome">Welcome!</h1>
+  <p>Find fitness buddies who match your goals.</p>
+</header>
+
+<hr>
+
+<!-- Main Dashboard -->
+<section class="main-container">
+<section class="dashboard">
+
+  <div class="card">
+    <h3>Track Workouts</h3>
+    <button class="action-btn"><a href="tracker.html">Start</a></button>
+  </div>
+  <div class="card">
+    <h3>BMI</h3>
+    <button class="action-btn"><a href="BMI.html">BMI</a></button>
+  </div>
+  <div class="card">
+    <h3>Gym Finder</h3>
+    <button class="action-btn"><a href="location.html">Gym</a></button>
+  </div>
+</section>
+
+<hr>
+
+
+
+
+
+<!-- Recommended Buddies -->
+<section class="buddies-section">
+  <section style="text-align: center; padding: 40px 20px; background: linear-gradient(135deg, #3a8efd, #6f6ee6); border-radius: 20px; margin: 30px auto; max-width: 900px; box-shadow: 0 10px 25px rgba(0,0,0,0.2);">
+    <h1 style="color: #fff; font-size: 36px; font-weight: bold; margin-bottom: 15px; letter-spacing: 1px; font-family: 'Segoe UI', sans-serif;">
+      CONNECT WITH MATCH BUDDIES
+    </h1>
+    <p style="color: #f9f9f9; font-size: 18px; line-height: 1.7; max-width: 700px; margin: 0 auto; font-family: 'Segoe UI', sans-serif;">
+      Surround yourself with people who push you to be your best — build your fitness tribe and rise together!
+    </p>
+  </section>
+  <hr><br><br>
+  <div id="buddies-container" class="buddies-container"></div>
+  </div>
+</section>
+
+</section>
+
+
+<footer style="background-color: #1e1e2f; padding: 15px 20px; text-align: center; color: #ccc; font-family: 'Segoe UI', sans-serif; font-size: 14px;">
+  <p style="margin: 5px 0; font-weight: bold; color: #f0f0f0;">FitConnect</p>
+  <p style="margin: 0; font-style: italic;">likes @ healthy vibes only 💪</p>
+</footer>
+
+
+
+</body>
+<script type="module">
+
+
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+  import { getAuth, onAuthStateChanged,createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+  import { getDatabase, onValue,ref, set, get } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js";
+
+   const firebaseConfig = {
+      apiKey: "AIzaSyDvJ5icMfg6QOSq1_RrdsY2qMnCNkdRyzs",
+      authDomain: "fitnessbuddyapp-f08eb.firebaseapp.com",
+      databaseURL: "https://fitnessbuddyapp-f08eb-default-rtdb.firebaseio.com",
+      projectId: "fitnessbuddyapp-f08eb",
+      storageBucket: "fitnessbuddyapp-f08eb.firebasestorage.app",
+      messagingSenderId: "709503176678",
+      appId: "1:709503176678:web:8fa732501ec7ca3a67d027",
+      measurementId: "G-JF32SWZCRM"
+    };
+
+
+
+
+
+
+
+
+
+
+
+
+   const app = initializeApp(firebaseConfig);
+   const auth = getAuth(app);
+   const db = getDatabase(app);
+
+  const welcomeText = document.getElementById("welcome");
+  const buddiesContainer = document.getElementById("buddies-container");
+
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      const uid = user.uid;
+      const userRef = ref(db, 'users/' + uid);
+      onValue(userRef, (snapshot) => {
+        const data = snapshot.val();
+        welcomeText.textContent = `Welcome, ${data.name || 'User'}!`;
+      });
+
+      const buddiesRef = ref(db, 'users');
+      onValue(buddiesRef, (snapshot) => {
+        buddiesContainer.innerHTML = '';
+        snapshot.forEach(child => {
+          const buddy = child.val();
+          if (child.key !== uid) {
+            buddiesContainer.innerHTML += `
+              <div class="buddy-card">
+                <img src="${buddy.photo || 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMwAAADACAMAAAB/Pny7AAAARVBMVEX6+vqPj4////+ZmZnd3d2MjIyJiYmGhob29vbw8PDk5OTFxcWDg4OTk5Ojo6Pz8/PR0dGysrK9vb3Ly8vq6uqsrKzX19edyqDsAAAEeUlEQVR4nO2c2XalIBBFtRicEAWH///URtPJnZIr4kB5V+2XJN0vdVYVUMKBJCEIgiAIgiAIgiAIgiAIgiAIgiAIglgJ/BA7ko04BU3J287R8jK/sCCAnFujGatnGNNDxZNL6gEoLatT4Uhn5t9qZvvLyQHg+qbjxvRvuryWHOhr9azjhtL5ddRAbt5ImfKjbOwYveEse6vFkekydpQ+QNKlcklLmsq6jR3pMpDb12H/q5q0SrCPnNxILy3TxFbFDnYJszhcbmqkRZ0asB7D5U5Nh1gNtP55mdVkJVo1UPiOlx81InbMfwJspRanRiNNDVSrtTg1LUo1UKxPjBPDUPZpYAO0OCqEYqDUQWKkLvCpCRoxM/gWGyiGNevlfWpMEzv4Z2CsAxMjGEeXmmrd4n+fGmx1Fl5lCOsMytAqm7qAHldqYAxOjFODbdB0wUMmTbMRl5jcbhHTxQ7/kcZsKLPM5rHjf2DDZIZvOivCGjMSczifJeaTxsxHzWbNpnUG29bmpg4A2R46jBvEYOvNNnXNDNu+Zq8/53smScJnAIlt/CfQhmpBuAcAfWgPIIcidvAvrDuauc8Mwi1N4CFbzQh3AGYgrKMRKM8CoQw7BehjB/4rQccAGEfMTBNychY76L8AvnrhlNg6mRtQvTcAvaBwHgL+Z8HO9KwF5Uz2DTR6hRplcH1hvlD4q1EDum75CfBW4/KCuchmIPfrBKRF79BKJvdcVS+uN6JuL+I6Ba7fmwFlPeBdX56BvNJ/e4Kk0N0VSuwH6CstftMjMqErjE3/OwD61tRZ9lBuMsuYaa9nOZ/kNGVrdaqUyhzuR6rtON1uiB1ZGJDkRV+OXeVox7Iv8kuNlVfg118JgiDQAbsRXUjel3wnyj7m7brpjtyg2W5oU0VrdaAwzLXA+yFlymycz0/grgde+ghbixB1jJYaWrW7lFlOhJsbMK7c7/MnOzs3UCx/54dy+vUAMEdJSU8/sgk9JvMUw04ttNAbGb6catvOtziylpHmRC2h10u8xZx5mn7skDn5BNqJOVJLOj0ZQGJIDD9u/Y8g5pMmgCAzxioxp2nZ4Mfy41zX1iZPtoeYc4+ht3iyPcSc2jZ/VKMZfivTh5Ndm9AfOZ1Jfa5zA8yRdXaypebIOhP12d7g/Lg6O/8pCuiOExPBtH1UamK8EXLYLqCKsj87bLgy80ZLFHcgFH7PZa1DsDjuQOD7F5qQ0Xw17e5qVMQL6Gutv0vEvUpX7fkpIGK/dVTtd3omoj8TCC3bKTlSx3+wAfiQ7ZAcIQ0G2yYUVbp5+cxYh8PlDMCN3FRrmbQY0vIFNKPOwi+dZgPHkZZvGj6ooGLLJimxo3+lN2rtGiqVsjjvnLnBM2rlP7UJpTSP7mX6GxfaONRfTpg3Ktx/CsEMj2/LWsAF2Hfzy+Zf72Y/Wn0mjdNr57Yt0Cv5AuZH59vKmkHrOwuX+2MwtpqN2tdQ8s1/b1/Rl+Vsr3M/+iZBYfkLB49tkSAIgiAIgiAIgiAIgiAIgiAIgiCIC/IPYNg9bl17nywAAAAASUVORK5CYII='}" alt="${buddy.name}">
+                <div class="buddy-info">
+                  <h4>${buddy.name}</h4>
+                  <p class="location"> ${buddy.age} year , ${buddy.location},${buddy.Country}</p>
+                  <p>${buddy.Workouts}</p>
+                  <p><strong>Mission:</strong>${buddy.activityLevel}</p>
+
+
+                  <div class="tags">
+                    ${(buddy.tags || ['#Fitness']).map(tag => `<span>${tag}</span>`).join('')}
+                  </div>
+                   <button class="message-btn">Message</button>
+                </div>
+              </div>
+            `;
+          }
+        });
+      });
+    } else {
+      location.href = 'login.html';
+    }
+  });
+</script>
+</html>

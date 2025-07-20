@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login Page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="module" src="../javascript/script.js"></script>
+    <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: #f0f2f5;
+    }
+
+    .container {
+      background: #ffffff;
+      max-width: 900px;
+      width: 100%;
+      display: flex;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    }
+
+    .left-panel {
+      flex: 1;
+      background: linear-gradient(to bottom right,   #a8a7ab ,  #a8a7ab );
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1px;
+    }
+
+    .left-panel img {
+      max-width: 100%;
+      height: auto;
+    }
+
+    .right-panel {
+      flex: 1;
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .right-panel h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    .right-panel input {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+
+    .right-panel button {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      background: #cecdd0 ;
+      color: black;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .right-panel button:hover {
+      background: #e14b63;
+    }
+
+    .right-panel p {
+      text-align: center;
+      margin-top: 15px;
+      font-size: 0.95rem;
+      color: #555;
+    }
+
+    .right-panel a {
+      color: #333;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: column;
+      }
+
+      .left-panel {
+        display: none;
+      }
+
+      .right-panel {
+        padding: 30px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="left-panel">
+        <img src="https://i.pinimg.com/736x/e5/13/e8/e513e87b6ef2b77f0bd19d7f6ce00d3a.jpg" alt="FitBuddy Image">
+    </div>
+
+    <div class="right-panel">
+        <h2>Login to FitBuddy</h2>
+        <form>
+            <input type="email" id="mailId" placeholder="Email" required>
+            <input type="password" id="pswId" placeholder="Password" required>
+            <button onclick="subBTNFn(event)">Continue</button>
+            <p>Don't have an account? <a href="registration.html">Sign up</a></p>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

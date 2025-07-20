@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Nearby Gym Finder</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Segoe UI', sans-serif;
+    }
+    body {
+      margin: 0;
+      background: #f1f4f9;
+      padding: 2rem;
+    }
+    .container {
+      max-width: 800px;
+      margin: auto;
+      background: white;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    }
+    h1 {
+      text-align: center;
+      color: #2e86c1;
+      margin-bottom: 1.5rem;
+    }
+    input {
+      width: 100%;
+      padding: 1rem;
+      font-size: 1rem;
+      margin-bottom: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+    .gym-list {
+      display: grid;
+      gap: 1rem;
+    }
+    .gym-card {
+      background-color: #ebf5fb;
+      border-left: 6px solid  #3498db;
+      border-radius: 8px;
+      padding: 1rem;
+      transition: transform 0.2s;
+    }
+    .gym-card:hover {
+      transform: translateY(-3px);
+    }
+    .gym-card h3 {
+      margin-top: 0;
+      color: #1b5e20;
+    }
+    .not-found {
+      text-align: center;
+      color: #ff6f00;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>🏋️‍♂️ Nearby Gym Finder</h1>
+  <input type="text" id="searchInput" placeholder="Enter city or postal code..." oninput="searchGyms()">
+  <div id="gymList" class="gym-list"></div>
+</div>
+
+<script type="module">
+
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+  import { getDatabase, ref, get, push, set } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyDvJ5icMfg6QOSq1_RrdsY2qMnCNkdRyzs",
+    authDomain: "fitnessbuddyapp-f08eb.firebaseapp.com",
+    databaseURL: "https://fitnessbuddyapp-f08eb-default-rtdb.firebaseio.com",
+    projectId: "fitnessbuddyapp-f08eb",
+    storageBucket: "fitnessbuddyapp-f08eb.appspot.com",
+    messagingSenderId: "709503176678",
+    appId: "1:709503176678:web:8fa732501ec7ca3a67d027",
+    measurementId: "G-JF32SWZCRM"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth();
+  const db = getDatabase(app);
+
+
+
+
+
+  onAuthStateChanged(auth, (user) => {
+    if (!user) {
+      window.location.href = "login.html"; // Redirect to login page
+    } else {
+      // ✅ User is logged in — you can show progress or fetch user data here
+      console.log("User is logged in:", user.email);
+    }
+  });
+
+
+
+    // Static Gym Data
+    const gyms = [
+      { name: "Gold's Gym", city: "Delhi", postal: "110001", address: "Connaught Place" },
+      { name: "Anytime Fitness", city: "Mumbai", postal: "400001", address: "Churchgate" },
+      { name: "FitZone", city: "Delhi", postal: "110092", address: "Laxmi Nagar" },
+      { name: "Powerhouse Gym", city: "Bangalore", postal: "560001", address: "MG Road" },
+      { name: "Muscle Factory", city: "Pune", postal: "411001", address: "Shivaji Nagar" },
+      { name: "Iron Temple", city: "Hyderabad", postal: "500001", address: "Abids" },
+      { name: "Alpha Gym", city: "Jaipur", postal: "302001", address: "MI Road" }
+    ];
+
+    function searchGyms() {
+      const input = document.getElementById("searchInput").value.toLowerCase();
+      const gymList = document.getElementById("gymList");
+      gymList.innerHTML = "";
+
+      const results = gyms.filter(gym =>
+        gym.city.toLowerCase().includes(input) ||
+        gym.postal.includes(input)
+      );
+
+      if (results.length === 0 && input.trim() !== "") {
+        gymList.innerHTML = `<p class="not-found">No gyms found in that area.</p>`;
+        return;
+      }
+
+      results.forEach(gym => {
+        const div = document.createElement("div");
+        div.className = "gym-card";
+        div.innerHTML = `
+          <h3>${gym.name}</h3>
+          <p><strong>Address:</strong> ${gym.address}</p>
+          <p><strong>City:</strong> ${gym.city}</p>
+          <p><strong>Postal Code:</strong> ${gym.postal}</p>
+        `;
+        gymList.appendChild(div);
+      });
+    }
+  </script>
+</body>
+</html>

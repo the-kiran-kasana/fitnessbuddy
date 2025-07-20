@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Fitness Buddy Chat</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background:  #424949 ;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+
+    }
+
+    .chat-container {
+      width: 100%;
+      max-width: 1700px;
+      height: 90vh;
+      display: flex;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      border-radius: 5px;
+      overflow: hidden;
+      background: #161617;
+    }
+
+    .user-panel {
+      width: 30%;
+      background: #161617;
+      display: flex;
+      flex-direction: column;
+      border-right: 2px solid #d1f0ea;
+    }
+
+    .search-bar {
+      padding: 20px;
+      border-bottom: 1px solid #ccece6;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background:  #161617  ;
+    }
+
+    .search-bar input {
+      flex: 1;
+      padding: 10px;
+      border-radius: 20px;
+      border: 1px solid #bbb;
+      background:  #6b6b6d ;
+    }
+
+    .search-bar img {
+      width: 20px;
+      height: 20px;
+    }
+
+    .user-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 10px;
+    }
+
+    .user {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px;
+      cursor: pointer;
+      border-radius: 8px;
+    }
+
+    .user:hover {
+      background: #c6f0ea;
+    }
+
+    .user img {
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+    }
+
+    .chat-panel {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      background:  #232324 ;
+
+    }
+
+    #chatBox {
+      flex: 1;
+      padding: 15px;
+      overflow-y: auto;
+       background: #161617;
+       background-image: url("https://i.pinimg.com/736x/54/3d/e8/543de8a1f2887da54f7b7de6772f6aa2.jpg");
+       background-size: cover;
+      background-repeat: no-repeat;
+    }
+
+    .chat-input {
+      display: flex;
+      padding: 10px;
+      border-top: 1px solid #eee;
+    }
+
+    .chat-input input {
+      flex: 1;
+      padding: 10px;
+      border-radius: 20px;
+      border: 1px solid #ccc;
+      background-color:   #676668 ;
+      color: white;
+    }
+
+    .chat-input button {
+      margin-left: 10px;
+      padding: 10px 15px;
+      border-radius: 20px;
+      border: none;
+      background-color:   #676668 ;
+      color: white;
+      cursor: pointer;
+    }
+
+    .chat-input button:hover {
+      background-color:  #676668 ;
+    }
+
+    @media (max-width: 768px) {
+      .chat-container {
+        flex-direction: column;
+      }
+
+      .user-panel {
+        width: 100%;
+        height: 40%;
+      }
+
+      .chat-panel {
+        height: 60%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="chat-container">
+
+  <div class="user-panel">
+    <div class="search-bar">
+      <input type="text" id="searchUser" placeholder="Search or stat a new chat with user..." oninput="filterUsers()">
+      <img src="https://cdn-icons-png.flaticon.com/512/622/622669.png" alt="search">
+    </div>
+    <hr>
+    <div class="user-list" id="userListId"></div>
+  </div>
+
+
+<div class="chat-panel" id="chatSection" style="display: flex; flex-direction: column;">
+  <div id="chatHeader" style="padding: 38px; background-color:#232324 ;color:white; font-size:20px; font-weight: bold; border-bottom: 2px solid #ccc;"></div>
+  <div id="chatBox" style="flex-grow: 1;color:white; overflow-y: auto; padding: 10px;"></div>
+  <div class="chat-input">
+    <input type="text" id="messageInput" placeholder="Type a message...">
+    <button onclick="sendMessage()">Send</button>
+  </div>
+</div>
+
+</div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+  import { getAuth ,onAuthStateChanged} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+  import {
+    getDatabase,
+    ref,
+    push,
+    onChildAdded,
+    off
+  } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyDvJ5icMfg6QOSq1_RrdsY2qMnCNkdRyzs",
+    authDomain: "fitnessbuddyapp-f08eb.firebaseapp.com",
+    databaseURL: "https://fitnessbuddyapp-f08eb-default-rtdb.firebaseio.com",
+    projectId: "fitnessbuddyapp-f08eb",
+    storageBucket: "fitnessbuddyapp-f08eb.appspot.com",
+    messagingSenderId: "709503176678",
+    appId: "1:709503176678:web:8fa732501ec7ca3a67d027"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+  const currentUserId = "user1"; // Replace this with actual current user
+  let activeBuddyId = null;
+  let chatRef = null;
+
+
+
+
+
+
+
+  window.sendMessage = function () {
+    const messageInput = document.getElementById("messageInput");
+    const text = messageInput.value.trim();
+    if (text && chatRef && activeBuddyId) {
+      push(chatRef, {
+        sender: currentUserId,
+        text: text,
+        timestamp: Date.now()
+      });
+      messageInput.value = "";
+    }
+  };
+
+
+
+
+
+  function openChatWithUser(buddyId, buddyName) {
+    document.getElementById("chatBox").innerHTML = "";
+  document.getElementById("chatHeader").innerText = `${buddyName}`;
+
+  if (chatRef) off(chatRef); // remove previous listener
+
+  activeBuddyId = buddyId;
+  const chatId = [currentUserId, buddyId].sort().join("_");
+  chatRef = ref(db, "messages/" + chatId);
+
+  onChildAdded(chatRef, (snapshot) => {
+    const data = snapshot.val();
+    const messageDiv = document.createElement("div");
+    messageDiv.innerText = `${data.sender === currentUserId ? "You" : buddyName}: ${data.text}`;
+    document.getElementById("chatBox").appendChild(messageDiv);
+    document.getElementById("chatBox").scrollTop = document.getElementById("chatBox").scrollHeight;
+  });
+  }
+
+
+
+
+
+
+  fetch("https://fitnessbuddyapp-f08eb-default-rtdb.firebaseio.com/users.json")
+    .then(res => res.json())
+    .then(data => {
+      const userList = document.getElementById("userListId");
+      for (let key in data) {
+        if (key === currentUserId) continue;
+        const user = data[key];
+        const userDiv = document.createElement("div");
+        userDiv.classList.add("user");
+        userDiv.innerHTML = `
+          <img src="https://cdn-icons-png.flaticon.com/512/147/147144.png" />
+          <div>
+            <p style="margin:0;color:white;"><strong>${user.name || "No Name"}</strong></p>
+            <p style="margin:0; font-size: 12px; color:white;"> ${user.Workouts || "Not Added"}</p>
+          </div><br>`;
+        userDiv.addEventListener("click", () => {
+          openChatWithUser(key, user.name);
+        });
+        userList.appendChild(userDiv);
+      }
+    });
+
+  // Filter user search
+  window.filterUsers = function () {
+    const search = document.getElementById("searchUser").value.toLowerCase();
+    const users = document.querySelectorAll(".user");
+    users.forEach(user => {
+      const name = user.innerText.toLowerCase();
+      user.style.display = name.includes(search) ? "flex" : "none";
+    });
+  };
+</script>
+</body>
+</html>

@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fitness Buddy - Progress Sharing</title>
+  <style>
+        :root {
+            --primary: #4a6fa5;
+            --secondary: #ff7e5f;
+            --light: #f8f9fa;
+            --dark: #343a40;
+            --success: #28a745;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            color: #666;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .progress-sharing {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            justify-content: space-between;
+        }
+
+        .stats-card {
+            flex: 1 1 300px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+            transition: transform 0.3s ease;
+        }
+
+        .stats-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stats-card h3 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .stat-item:last-child {
+            border-bottom: none;
+        }
+
+        .stat-label {
+            font-weight: 600;
+            color: #555;
+        }
+
+        .stat-value {
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .share-actions {
+            margin-top: 25px;
+            text-align: center;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.3s;
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            background-color: #3a5a90;
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary);
+        }
+
+        .btn-secondary:hover {
+            background-color: #e66b4f;
+        }
+
+        .buddies-list {
+            flex: 1 1 400px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+        }
+
+        .buddies-list h3 {
+            color: var(--primary);
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+        }
+
+        .buddy-item {
+            display: flex;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .buddy-item:last-child {
+            border-bottom: none;
+        }
+
+        .buddy-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 15px;
+            object-fit: cover;
+        }
+
+        .buddy-info {
+            flex-grow: 1;
+        }
+
+        .buddy-name {
+            font-weight: 600;
+            margin-bottom: 3px;
+        }
+
+        .buddy-status {
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        .online {
+            color: var(--success);
+        }
+
+        .recent-activity {
+            flex: 1 1 100%;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+            margin-top: 30px;
+        }
+
+        .recent-activity h3 {
+            color: var(--primary);
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+        }
+
+        .activity-item {
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+            display: flex;
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 15px;
+            object-fit: cover;
+        }
+
+        .activity-content {
+            flex-grow: 1;
+        }
+
+        .activity-message {
+            margin-bottom: 5px;
+        }
+
+        .activity-time {
+            font-size: 0.8rem;
+            color: #999;
+        }
+
+        .share-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-header h3 {
+            color: var(--primary);
+            font-size: 1.4rem;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #999;
+        }
+
+        .share-form {
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .progress-sharing {
+                flex-direction: column;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .stats-card, .buddies-list {
+                flex: 1 1 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h1>Share Your Progress with Buddies</h1>
+    <p>Stay motivated by sharing your fitness journey with your workout buddies. Celebrate achievements together and keep each other accountable!</p>
+  </div>
+
+  <div class="progress-sharing">
+    <div class="stats-card">
+      <h3>Your Weekly Summary</h3>
+
+      <div class="stat-item">
+        <span class="stat-label">Workouts Completed:</span>
+        <span class="stat-value">5</span>
+      </div>
+
+      <div class="stat-item">
+        <span class="stat-label">Total Duration:</span>
+        <span class="stat-value">4h 30m</span>
+      </div>
+
+      <div class="stat-item">
+        <span class="stat-label">Calories Burned:</span>
+        <span class="stat-value">2,450</span>
+      </div>
+
+      <div class="stat-item">
+        <span class="stat-label">Goals Achieved:</span>
+        <span class="stat-value">3/5</span>
+      </div>
+
+      <div class="share-actions">
+        <button class="btn" id="share-btn">Share Progress</button>
+      </div>
+    </div>
+
+    <div class="buddies-list">
+      <h3>Your Fitness Buddies</h3>
+
+      <div class="buddy-item">
+        <img src="https://placehold.co/100x100" alt="Profile photo of Alex Johnson, 28 year old fitness enthusiast with short brown hair" class="buddy-avatar">
+        <div class="buddy-info">
+          <div class="buddy-name">Alex Johnson</div>
+          <div class="buddy-status online">Online - Just completed a workout</div>
+        </div>
+      </div>
+
+      <div class="buddy-item">
+        <img src="https://placehold.co/100x100" alt="Profile photo of Sam Wilson, 30 year old marathon runner with blonde hair" class="buddy-avatar">
+        <div class="buddy-info">
+          <div class="buddy-name">Sam Wilson</div>
+          <div class="buddy-status">Last active: 2 hours ago</div>
+        </div>
+      </div>
+
+      <div class="buddy-item">
+        <img src="https://placehold.co/100x100" alt="Profile photo of Taylor Chen, 25 year old yoga instructor with long black hair" class="buddy-avatar">
+        <div class="buddy-info">
+          <div class="buddy-name">Taylor Chen</div>
+          <div class="buddy-status online">Online - Available to chat</div>
+        </div>
+      </div>
+
+      <div class="buddy-item">
+        <img src="https://placehold.co/100x100" alt="Profile photo of Jordan Smith, 32 year old weightlifter with muscular build" class="buddy-avatar">
+        <div class="buddy-info">
+          <div class="buddy-name">Jordan Smith</div>
+          <div class="buddy-status">Last active: 1 day ago</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Share Modal -->
+<div class="share-modal" id="share-modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>Share Your Progress</h3>
+      <button class="close-btn" id="close-modal">&times;</button>
+    </div>
+
+    <div class="share-form">
+      <div class="form-group">
+        <label for="share-message">Message</label>
+        <textarea id="share-message" class="form-control" rows="3" placeholder="Share a motivational message with your buddies..."></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>Share these stats:</label>
+        <div>
+          <input type="checkbox" id="share-workouts" checked>
+          <label for="share-workouts">Workouts Completed</label>
+        </div>
+        <div>
+          <input type="checkbox" id="share-duration" checked>
+          <label for="share-duration">Total Duration</label>
+        </div>
+        <div>
+          <input type="checkbox" id="share-calories" checked>
+          <label for="share-calories">Calories Burned</label>
+        </div>
+        <div>
+          <input type="checkbox" id="share-goals" checked>
+          <label for="share-goals">Goals Achieved</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn btn-secondary" id="cancel-share">Cancel</button>
+      <button class="btn" id="confirm-share">Share Now</button>
+    </div>
+  </div>
+</div>
+
+<script>
+        // Modal functionality
+        const shareBtn = document.getElementById('share-btn');
+        const shareModal = document.getElementById('share-modal');
+        const closeModal = document.getElementById('close-modal');
+        const cancelShare = document.getElementById('cancel-share');
+        const confirmShare = document.getElementById('confirm-share');
+
+        shareBtn.addEventListener('click', () => {
+            shareModal.style.display = 'flex';
+        });
+
+        closeModal.addEventListener('click', () => {
+            shareModal.style.display = 'none';
+        });
+
+        cancelShare.addEventListener('click', () => {
+            shareModal.style.display = 'none';
+        });
+
+        confirmShare.addEventListener('click', () => {
+            const message = document.getElementById('share-message').value;
+            const includeWorkouts = document.getElementById('share-workouts').checked;
+            const includeDuration = document.getElementById('share-duration').checked;
+            const includeCalories = document.getElementById('share-calories').checked;
+            const includeGoals = document.getElementById('share-goals').checked;
+
+            // In a real app, this would send data to backend
+            alert('Your progress has been shared with your buddies!');
+            shareModal.style.display = 'none';
+
+            // Reset form
+            document.getElementById('share-message').value = '';
+        });
+
+        // Close modal when clicking outside
+        window.addEventListener('click', (e) => {
+            if (e.target === shareModal) {
+                shareModal.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>

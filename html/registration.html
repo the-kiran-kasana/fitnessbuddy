@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <script type="module" src="../javascript/script.js"></script>
+    <title>Register | FitBuddy</title>
+    <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Segoe UI", sans-serif;
+      background: #f3f4f6;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .register-container {
+      background: white;
+      max-width: 400px;
+      width: 100%;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+      transition: 0.3s ease;
+    }
+
+    .register-container:hover {
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    h2 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 25px;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px 15px;
+      margin-bottom: 15px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      font-size: 1rem;
+      transition: border 0.3s;
+    }
+
+    input:focus {
+      border-color: #f9307f;
+      outline: none;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(135deg,  #e8e7eb,  #9c9c9e );
+      border: none;
+      color: white;
+      font-size: 1rem;
+      font-weight: bold;
+      border-radius: 10px;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background: linear-gradient(135deg, #e12c71, #ebadc9);
+    }
+
+    .policy-text, .login-link {
+      text-align: center;
+      margin-top: 15px;
+      font-size: 0.9rem;
+      color: #777;
+    }
+
+    .login-link a {
+      color: #f9307f;
+      text-decoration: none;
+    }
+
+    .login-link a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 480px) {
+      .register-container {
+        padding: 20px;
+      }
+
+      h2 {
+        font-size: 1.5rem;
+      }
+
+      input, button {
+        font-size: 0.95rem;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="register-container">
+    <h2>Join FitBuddy</h2>
+    <form id="registerForm" onsubmit="registerBTNFn(event)">
+        <input type="text" id="nameId" placeholder="Your Name" required />
+        <input type="email" id="emailId" placeholder="Email Address" required />
+        <input type="password" id="passwordId" placeholder="Password" required />
+        <input type="password" id="confPassId" placeholder="Confirm Password" required />
+        <button id="subBTNId" type="submit">Sign Up</button>
+        <div class="policy-text">
+            <p>By signing up, you agree to our <u>Terms</u> & <u>Privacy Policy</u></p>
+        </div>
+        <div class="login-link">
+            <p>Already have an account? <a href="login.html">Log In</a></p>
+        </div>
+    </form>
+</div>
+
+<script type="module" src="../javascript/script.js"></script>
+</body>
+</html>
