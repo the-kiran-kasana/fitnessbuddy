@@ -126,7 +126,6 @@
     }
 
 
-/* ========== Modern Goal Progress Styles ========== */
 .progress-section {
   margin-top: 30px;
   background: linear-gradient(135deg, #f9fafe, #eef2ff);
@@ -201,12 +200,6 @@
     height: 12px;
   }
 }
-
-
-
-
-
-
 
 
 
@@ -467,9 +460,8 @@ input:checked + .slider:before {
 
   onAuthStateChanged(auth, (user) => {
     if (!user) {
-      window.location.href = "login.html"; // Redirect to login page
+      window.location.href = "login.html";
     } else {
-      // ✅ User is logged in — you can show progress or fetch user data here
       console.log("User is logged in:", user.email);
     }
   });

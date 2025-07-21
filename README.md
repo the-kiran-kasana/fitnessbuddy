@@ -38,12 +38,12 @@
 
 ## Video Walkthrough of the project
 all about the  project step by step.
-link : https://youtu.be/QW1QPp6iCxw
+link : https://youtu.be/lhRT409u9yY
 
 *********************************************************************************************************************
 ## Video Walkthrough of the codebase
 all about the code of project step by step.
-link : https://youtu.be/-j2pJjt44A0
+link : https://youtu.be/A4Ejy15Tt7c
 
 
 
